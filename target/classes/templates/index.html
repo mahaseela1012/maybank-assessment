@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Bank Branch Management System</title>
+
+
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container my-2">
+     <div class="text-center my-3">
+    <h1>
+        <img th:src="@{/image/maybank-logo.jpeg}" alt="Maybank Logo" style="height: 70px; 
+        	vertical-align: middle; margin-right: -10px;">
+        BANK BRANCH LIST
+    </h1>
+</div>
+
+    <a th:href="@{/showNewBankForm}" class="btn btn-maybank mb-3">Add Bank Branch</a>
+
+    <table border="1" class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=bankCode&sortDir=' + ${reverseSortDir}}">
+                    Bank Code</a>
+            </th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=branchName&sortDir=' + ${reverseSortDir}}">
+                    Branch Name</a>
+            </th>
+             <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=bankCode&sortDir=' + ${reverseSortDir}}">
+                    Branch Code</a>
+            </th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=city&sortDir=' + ${reverseSortDir}}">
+                    City</a>
+            </th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bank : ${listBanks}">
+            <td th:text="${bank.bankCode}"></td>
+            <td th:text="${bank.branchName}"></td>
+              <td th:text="${bank.branchCode}"></td>
+            <td th:text="${bank.city}"></td>
+            <td>
+               <a th:href="@{/showFormForUpdate/{id}(id=${bank.id})}" class="btn btn-maybank">Update</a>
+			   <a th:href="@{/deleteBank/{id}(id=${bank.id})}" class="btn btn-delete">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${totalPages > 1}">
+			<div class="row col-sm-12">
+
+				<!-- Total Rows -->
+				<div class="col-sm-2">Total Rows: [[${totalItems}]]</div>
+
+			<div class="row col-sm-4">
+				
+					<a th:if="${currentPage > 1}"
+						th:href="@{'/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"><u>First</u></a>
+					<span th:unless="${currentPage > 1}"><u>First</u></span>&nbsp;&nbsp;
+				
+
+				
+					<a th:if="${currentPage > 1}"
+						th:href="@{'/page/' + (${currentPage - 1}) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"><u>Prev</u></a>
+					<span th:unless="${currentPage > 1}"><u>Prev</u></span>&nbsp;&nbsp;
+				
+					<span
+						th:each="i : ${#numbers.sequence((currentPage > 1) ? currentPage - 1 : 1, (currentPage < totalPages - 1) ? currentPage + 1 : totalPages)}">
+						<a th:if="${i != currentPage}"
+						th:href="@{'/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						<span th:if="${i == currentPage}">[[${i}]]</span> &nbsp;
+					</span>
+				
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{'/page/' + (${currentPage + 1}) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"><u>Next</u></a>
+					<span th:unless="${currentPage < totalPages}">Next</span>&nbsp;&nbsp;
+				
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{'/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"><u>Last</u></a>
+					<span th:unless="${currentPage < totalPages}"><u>Last</u></span>
+				</div>
+			</div>
+			</div>
+		</div>
+</body>
+</html>

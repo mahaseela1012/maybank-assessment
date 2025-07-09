@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>CREATE NEW BANK BRANCH</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+body {
+	font-family: 'Segoe UI', Arial, sans-serif;
+	background-color: #f0f2f5;
+	color: #333;
+}
+
+.container {
+	background-color: #ffffff;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	padding: 30px;
+	margin-top: 40px;
+	margin-bottom: 40px;
+	max-width: 700px;
+}
+
+h2.my-4 {
+	color: #004A8B;
+	text-align: center;
+	margin-bottom: 30px;
+	font-weight: 600;
+	font-size: 28px;
+}
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.form-group label {
+	color: #555;
+	font-weight: 500;
+	margin-bottom: 8px;
+	display: block;
+}
+
+.form-control {
+	border: 1px solid #ced4da;
+	border-radius: 6px;
+	font-size: 16px;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+	transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-control:focus {
+	border-color: #007bff;
+	box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+	outline: none; /* Remove default outline */
+}
+
+.btn {
+	font-size: 17px;
+	padding: 12px 25px;
+	border-radius: 8px;
+	font-weight: 600;
+	transition: background-color 0.2s ease-in-out, border-color 0.2s
+		ease-in-out;
+}
+
+.btn-success {
+	background-color: #004A8B;
+	border-color: #004A8B;
+	color: #fff;
+}
+
+.btn-success:hover {
+	background-color: #00376B;
+	border-color: #00376B;
+}
+
+.btn-secondary {
+	background-color: #6c757d;
+	border-color: #6c757d;
+	color: #fff;
+	margin-left: 10px;
+}
+
+.btn-secondary:hover {
+	background-color: #5a6268;
+	border-color: #545b62;
+}
+
+.btn-maybank-accent {
+	background-color: #FFDE00;
+	border-color: #FFDE00;
+	color: #333;
+}
+
+.btn-maybank-accent:hover {
+	background-color: #E6C800;
+	border-color: #E6C800;
+}
+</style>
+</head>
+<body>
+	<div class="container ">
+		<h2 class="my-4">CREATE NEW BANK BRANCH</h2>
+
+		<form th:action="@{/saveBank}" th:object="${bank}" method="post">
+
+			<div class="form-group">
+				<label>Bank Name</label> <input type="text" th:field="*{bankName}"
+					class="form-control" required>
+			</div>
+
+			<div class="form-group">
+				<label>Bank Code</label> <input type="text" th:field="*{bankCode}"
+					class="form-control" required>
+			</div>
+
+			<div class="form-group">
+				<label>Branch Name</label> <input type="text"
+					th:field="*{branchName}" class="form-control" required>
+			</div>
+
+			<div class="form-group">
+				<label>Branch Code</label> <input type="text"
+					th:field="*{branchCode}" class="form-control">
+			</div>
+
+			<div class="form-group">
+				<label>Bank Manager Name</label> <input type="text"
+					th:field="*{bankManagerName}" class="form-control">
+			</div>
+
+			<div class="form-group">
+				<label>Email</label> <input type="email" th:field="*{email}"
+					class="form-control">
+			</div>
+
+			<div class="form-group">
+				<label>Contact Number</label> <input type="text"
+					th:field="*{contactNumber}" class="form-control">
+			</div>
+
+			<div class="form-group">
+				<label>Address</label> <input type="text" th:field="*{address}"
+					class="form-control">
+			</div>
+
+			<div class="form-group">
+				<label>State</label> <select id="stateDropdown" th:field="*{state}"
+					class="form-control">
+					<option value="">-- Select State --</option>
+					<option th:each="state : ${states}" th:text="${state}"
+						th:value="${state}"></option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label>City</label> <select id="cityDropdown" th:field="*{city}"
+					class="form-control">
+					<option value="">-- Select City --</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label>Post Code</label> <input type="text" th:field="*{postCode}"
+					class="form-control">
+			</div>
+
+			<button type="submit" class="btn btn-success">Save</button>
+			<a th:href="@{/}" class="btn btn-secondary">Cancel</a>
+		</form>
+	</div>
+
+	<script th:inline="javascript">
+    let stateCityMap = [[${stateCityMap}]];
+    
+    $('#stateDropdown').change(function () {
+        let selectedState = $(this).val();
+        let cities = stateCityMap[selectedState];
+        let cityDropdown = $('#cityDropdown');
+        cityDropdown.empty();
+        cityDropdown.append('<option value="">-- Select City --</option>');
+        if (cities) {
+            cities.forEach(function (city) {
+                cityDropdown.append('<option value="' + city + '">' + city + '</option>');
+            });
+        }
+    });
+</script>
+</body>
+</html>
